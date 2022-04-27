@@ -4,7 +4,9 @@ import MonacoEditor from '@monaco-editor/react';
 import { AppContext } from '../../AppContextProvider';
 
 export const CodeEditor = () => {
-	const { language } = useContext(AppContext);
+	const {
+		language: { selectedLanguage },
+	} = useContext(AppContext);
 
 	return (
 		<MonacoEditor
@@ -12,9 +14,9 @@ export const CodeEditor = () => {
 			onMount={(monacoEditor) => {
 				monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
 			}}
+			width="calc(100% - 9px)"
 			onChange={(value) => console.log(value)}
-			language={language}
-			height="100%"
+			language={selectedLanguage}
 			options={{
 				wordWrap: 'on',
 				minimap: { enabled: false },

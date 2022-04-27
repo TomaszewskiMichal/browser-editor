@@ -1,11 +1,12 @@
 import { Menu as MuiMenu, MenuItem, Typography } from '@mui/material';
+import { AppProviderLangEnum } from '../../models';
 
 interface MenuProps {
 	anchor: Element | null;
 	onClose: () => void;
-	options: string[];
-	handleOptionClick: (option: string) => void;
-	active: string;
+	options: any[];
+	handleOptionClick: (option: any) => void;
+	active: any;
 }
 
 export const Menu = ({ anchor, onClose, options, handleOptionClick, active }: MenuProps) => {
@@ -24,7 +25,7 @@ export const Menu = ({ anchor, onClose, options, handleOptionClick, active }: Me
 			open={Boolean(anchor)}
 			onClose={onClose}
 		>
-			{options.map((option: string) => (
+			{options.map((option: AppProviderLangEnum) => (
 				<MenuItem key={option} onClick={() => handleOptionClick(option)}>
 					<Typography className={option === active ? 'text-green-600' : 'text-red-600'} textAlign="center">
 						{option}

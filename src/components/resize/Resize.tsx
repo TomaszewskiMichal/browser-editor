@@ -31,13 +31,13 @@ export const Resizable = ({ direction, children }: ResizableProps) => {
 	const resizableBoxProps: ResizableBoxProps =
 		direction === ResizeDirectionEnum.HORIZONTAL
 			? {
-					className: 'flex flex-row',
+					className: 'flex flex-row h-full',
 					resizeHandles: ['e'],
 					width: dimensions.width,
 					minConstraints: [dimensions.initialWidth * 0.2, Infinity],
 					maxConstraints: [dimensions.initialWidth * 0.75, Infinity],
 					height: Infinity,
-					onResizeStop: (event, data) => setDimension((prev) => ({ ...prev, width: data.size.width })),
+					onResizeStop: (_, value) => setDimension((prev) => ({ ...prev, width: value.size.width })),
 			  }
 			: {
 					resizeHandles: ['s'],

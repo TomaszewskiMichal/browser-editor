@@ -1,11 +1,13 @@
 import { AppProvider } from './AppContextProvider';
-import { MainContent, NavBar } from './layout';
+import { MainContent, NavBar, GlobalThemeProvider } from './layout';
 
 export const App = () => {
 	return (
-		<AppProvider>
-			<NavBar />
-			<MainContent />
-		</AppProvider>
+		<GlobalThemeProvider>
+			<AppProvider>
+				<NavBar />
+				<MainContent />
+			</AppProvider>
+		</GlobalThemeProvider>
 	);
 };

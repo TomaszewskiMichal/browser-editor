@@ -11,7 +11,13 @@ export enum AppProviderLangEnum {
 
 export interface AppContextType {
 	bundler: any; //typeof esbuild | null;
-	language: AppProviderLangEnum;
-	setLanguage: (lang: string) => void;
-	rawCode: string;
+	language: {
+		selectedLanguage: AppProviderLangEnum;
+		setLanguage: (lang: AppProviderLangEnum) => void;
+	};
+	infoDialog: {
+		open: boolean;
+		toggleDialog: (value: boolean) => void;
+	};
+	rawCode: string | null;
 }

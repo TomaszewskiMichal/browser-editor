@@ -1,5 +1,8 @@
 import { useContext, useState, useRef } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
+import HelpIcon from '@mui/icons-material/Help';
+import CloseIcon from '@mui/icons-material/Close';
+import { Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
 
 import { AppContext } from '../AppContextProvider';
 import { AppProviderLangEnum } from '../models';
@@ -10,22 +13,48 @@ const languages = [AppProviderLangEnum.JS, AppProviderLangEnum.TS];
 export const NavBar = () => {
 	const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 	const anchorRef = useRef(null);
-	const { language, setLanguage, rawCode } = useContext(AppContext);
+	const {
+		language: { selectedLanguage, setLanguage },
+		rawCode,
+		infoDialog: { open, toggleDialog },
+	} = useContext(AppContext);
 
-	const handleClick = (option: string) => {
+	const handleClick = (option: AppProviderLangEnum) => {
 		setLanguage(option);
 		setAnchorEl(null);
 	};
-	return rawCode ? (
-		<div style={{ position: 'absolute', top: 0, right: 5, cursor: 'pointer' }}>
+	const handleClose = () => toggleDialog(false);
+
+	return !rawCode ? (
+		<div className="absolute top-0 right-2 cursor-pointer z-10">
 			<SettingsIcon onClick={() => setAnchorEl(anchorRef.current)} ref={anchorRef} />
+			<HelpIcon onClick={() => toggleDialog(true)} />
 			<Menu
 				anchor={anchorEl}
 				onClose={() => setAnchorEl(null)}
-				active={language}
+				active={selectedLanguage}
 				options={languages}
 				handleOptionClick={handleClick}
 			/>
+			<Dialog open={open} onClose={handleClose} PaperProps={{ sx: { backgroundColor: 'background.default' } }}>
+				<DialogTitle
+					className="flex justify-end items-center"
+					sx={{
+						paddingBottom: 0,
+						paddingTop: 0,
+						height: '50px',
+					}}
+				>
+					<CloseIcon className="cursor-pointer" onClick={handleClose} />
+				</DialogTitle>
+				<DialogContent className="pt-2">
+					<Typography variant="h4">
+						On this site you can write code using npm packages, Javascript or Typescript.
+					</Typography>
+					<br />
+					<Typography variant="h4">Unfortunately you can't use LocaleStorage.</Typography>
+				</DialogContent>
+			</Dialog>
 		</div>
 	) : (
 		<div />
