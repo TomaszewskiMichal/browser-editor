@@ -23,9 +23,7 @@ export const Resizable = ({ direction, children }: ResizableProps) => {
 		};
 		window.addEventListener('resize', listener);
 
-		return () => {
-			window.removeEventListener('resize', listener);
-		};
+		return () => window.removeEventListener('resize', listener);
 	}, [dimensions.width]);
 
 	const resizableBoxProps: ResizableBoxProps =

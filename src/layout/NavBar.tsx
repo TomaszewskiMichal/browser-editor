@@ -15,7 +15,7 @@ export const NavBar = () => {
 	const anchorRef = useRef(null);
 	const {
 		language: { selectedLanguage, setLanguage },
-		rawCode,
+		code: { raw },
 		infoDialog: { open, toggleDialog },
 	} = useContext(AppContext);
 
@@ -25,7 +25,7 @@ export const NavBar = () => {
 	};
 	const handleClose = () => toggleDialog(false);
 
-	return !rawCode ? (
+	return !raw ? (
 		<div className="absolute top-0 right-2 cursor-pointer z-10">
 			<SettingsIcon onClick={() => setAnchorEl(anchorRef.current)} ref={anchorRef} />
 			<HelpIcon onClick={() => toggleDialog(true)} />

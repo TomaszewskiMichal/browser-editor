@@ -6,6 +6,7 @@ import { AppContext } from '../../AppContextProvider';
 export const CodeEditor = () => {
 	const {
 		language: { selectedLanguage },
+		code: { raw, rawCodeChange },
 	} = useContext(AppContext);
 
 	return (
@@ -15,7 +16,8 @@ export const CodeEditor = () => {
 				monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
 			}}
 			width="calc(100% - 9px)"
-			onChange={(value) => console.log(value)}
+			onChange={rawCodeChange}
+			value={raw}
 			language={selectedLanguage}
 			options={{
 				wordWrap: 'on',

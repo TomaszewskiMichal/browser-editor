@@ -19,5 +19,10 @@ export interface AppContextType {
 		open: boolean;
 		toggleDialog: (value: boolean) => void;
 	};
-	rawCode: string | null;
+	code: {
+		raw: string | undefined;
+		bundled: string | null;
+		error: string | null;
+		rawCodeChange: (value: string | undefined) => void;
+	};
 }
