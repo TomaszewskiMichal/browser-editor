@@ -3,6 +3,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
 .react-resizable-handle {
 	display: block;
 	background-color: #37414b;
@@ -24,6 +25,23 @@ body {
 	height: 100%;
 	cursor: col-resize;
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+}
+
+.preview-wrapper {
+	position: relative;
+	height: calc(100% - 10px);
+	flex-grow: 1;
+	overflow: hidden;
+}
+
+.react-draggable-transparent-selection .preview-wrapper:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	opacity: 0;
 }
 @tailwind base;
 @tailwind components;

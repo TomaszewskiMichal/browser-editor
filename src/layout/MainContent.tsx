@@ -8,11 +8,13 @@ export const MainContent = () => {
 			<Resizable direction={ResizeDirectionEnum.HORIZONTAL}>
 				<CodeEditor />
 			</Resizable>
-			<div className="flex-grow relative overflow-hidden flex-col h-full">
+			<div className="flex-grow relative flex-col h-full">
 				<Resizable direction={ResizeDirectionEnum.VERTICAL}>
-					<iframe title="preview" />
+					<div className="preview-wrapper">
+						<iframe className="w-full h-full" title="preview" />
+					</div>
 				</Resizable>
-				{/* <div>OtherText</div> */}
+				<div>OtherText</div>
 			</div>
 		</div>
 	);

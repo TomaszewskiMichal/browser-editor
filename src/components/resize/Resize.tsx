@@ -40,10 +40,11 @@ export const Resizable = ({ direction, children }: ResizableProps) => {
 					onResizeStop: (_, value) => setDimension((prev) => ({ ...prev, width: value.size.width })),
 			  }
 			: {
+					className: 'h-full',
 					resizeHandles: ['s'],
-					minConstraints: [Infinity, 24],
+					minConstraints: [Infinity, dimensions.initialHeight * 0.2],
 					width: Infinity,
-					maxConstraints: [Infinity, dimensions.initialHeight * 0.98],
+					maxConstraints: [Infinity, dimensions.initialHeight * 0.75],
 					height: 300,
 			  };
 
