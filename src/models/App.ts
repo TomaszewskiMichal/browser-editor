@@ -1,18 +1,17 @@
-import esbuild from 'esbuild-wasm';
+import * as esbuild from 'esbuild-wasm';
 
 export interface AppProviderProps {
 	children: React.ReactNode;
 }
 
 export enum AppProviderLangEnum {
-	JS = 'javascript',
-	TS = 'typescript',
+	JS = 'jsx',
+	TS = 'tsx',
 }
 
 export interface AppContextType {
-	bundler: any; //typeof esbuild | null;
 	language: {
-		selectedLanguage: AppProviderLangEnum;
+		selectedLanguage: esbuild.Loader;
 		setLanguage: (lang: AppProviderLangEnum) => void;
 	};
 	infoDialog: {

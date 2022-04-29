@@ -1,7 +1,30 @@
+import { useRef, useContext, useEffect } from 'react';
+
+import { AppContext } from '../../AppContextProvider';
+import { previewHtml } from '../../models';
+
 export const Preview = () => {
+	const iFrameRef = useRef<HTMLIFrameElement | null>(null);
+	const {
+		code: { bundled },
+	} = useContext(AppContext);
+
+	useEffect(() => {
+		if (iFrameRef.current) {
+			iFrameRef.current.srcdoc = previewHtml;
+			setTimeout(() => iFrameRef.current?.contentWindow?.postMessage(bundled, '*'), 500);
+		}
+	}, [bundled]);
+
 	return (
 		<div className="preview-wrapper">
-			<iframe className="w-full h-full" title="preview" />
+			<iframe
+				ref={iFrameRef}
+				className="w-full h-full"
+				srcDoc={previewHtml}
+				//  sandbox="allow-scripts"
+				title="preview"
+			/>
 		</div>
 	);
 };

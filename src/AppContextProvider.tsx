@@ -3,9 +3,9 @@ import { Box } from '@mui/material';
 
 import { AppProviderProps, AppProviderLangEnum, AppContextType } from './models';
 import { useDebouncedText } from './hooks';
+import { bundler } from './bundler';
 
 export const AppContext = createContext<AppContextType>({
-	bundler: null,
 	language: {
 		selectedLanguage: AppProviderLangEnum.JS,
 		setLanguage: (value) => {},
@@ -23,14 +23,27 @@ export const AppContext = createContext<AppContextType>({
 });
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-	const [appState, setAppState] = useState({ language: AppProviderLangEnum.JS, rawCode: '', infoOpen: false });
+	const [appState, setAppState] = useState({
+		language: AppProviderLangEnum.JS,
+		rawCode: '',
+		bundle: '',
+		error: '',
+		infoOpen: false,
+	});
 	const { debounceText, debouncedText } = useDebouncedText();
 
 	useEffect(() => {
-		if (debouncedText) setAppState((prev) => ({ ...prev, rawCode: debouncedText }));
+		if (debouncedText) {
+			setAppState((prev) => ({ ...prev, rawCode: debouncedText }));
+			bundleCode();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedText]);
 
-	const bundler = async () => {};
+	const bundleCode = async () => {
+		const { errors, outputFiles } = (await bundler(debouncedText, appState.language)) as any;
+		setAppState((prev) => ({ ...prev, error: errors, bundle: outputFiles[0].text }));
+	};
 	const setLanguage = (lang: AppProviderLangEnum) => setAppState((prev) => ({ ...prev, language: lang }));
 	const toggleDialog = (value: boolean) => setAppState((prev) => ({ ...prev, infoOpen: value }));
 	const handleChangeCode = (value: string | undefined) => {
@@ -38,15 +51,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 	};
 
 	const contextValue = {
-		bundler,
 		language: {
 			selectedLanguage: appState.language,
 			setLanguage,
 		},
 		code: {
 			raw: appState.rawCode,
-			bundled: '',
-			error: '',
+			bundled: appState.bundle,
+			error: appState.error,
 			rawCodeChange: handleChangeCode,
 		},
 		infoDialog: {
