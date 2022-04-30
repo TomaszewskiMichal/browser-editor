@@ -15,6 +15,7 @@ window.addEventListener('error',(event)=>{
 	handleError(event.error)
 })
 }
+
 window.addEventListener('message',(event)=>{
 try {
   eval(event.data)

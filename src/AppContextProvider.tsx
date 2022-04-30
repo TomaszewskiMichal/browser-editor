@@ -41,7 +41,21 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 	}, [debouncedText]);
 
 	const bundleCode = async () => {
-		const { errors, outputFiles } = (await bundler(debouncedText, appState.language)) as any;
+		const { errors, outputFiles } = (await bundler(
+			`import _React from "react";
+		import _ReactDOM from "react-dom";
+		const show=(value)=>{
+		const root=document.querySelector('#root');
+			if(typeof value === 'object'){
+				if(value.$$typeof && value.props) return _ReactDOM.render( value,root)
+
+				return root.innerHTML=JSON.stringify(value)
+			};
+
+			return root.innerHTML=value
+		};${debouncedText}`.replaceAll('console.log', 'show'),
+			appState.language
+		)) as any;
 		setAppState((prev) => ({ ...prev, error: errors, bundle: outputFiles[0].text }));
 	};
 	const setLanguage = (lang: AppProviderLangEnum) => setAppState((prev) => ({ ...prev, language: lang }));

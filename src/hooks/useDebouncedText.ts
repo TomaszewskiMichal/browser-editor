@@ -22,7 +22,7 @@ export const useDebouncedText = () => {
 					})
 					.replace(/\n$/, '')
 			);
-		}, 3500);
+		}, 1000);
 	};
 
 	useEffect(() => {

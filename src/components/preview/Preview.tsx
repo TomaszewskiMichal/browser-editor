@@ -12,19 +12,13 @@ export const Preview = () => {
 	useEffect(() => {
 		if (iFrameRef.current) {
 			iFrameRef.current.srcdoc = previewHtml;
-			setTimeout(() => iFrameRef.current?.contentWindow?.postMessage(bundled, '*'), 500);
+			setTimeout(() => iFrameRef.current?.contentWindow?.postMessage(bundled, '*'), 100);
 		}
 	}, [bundled]);
 
 	return (
 		<div className="preview-wrapper">
-			<iframe
-				ref={iFrameRef}
-				className="w-full h-full"
-				srcDoc={previewHtml}
-				//  sandbox="allow-scripts"
-				title="preview"
-			/>
+			<iframe ref={iFrameRef} className="w-full h-full" srcDoc={previewHtml} sandbox="allow-scripts" title="preview" />
 		</div>
 	);
 };
