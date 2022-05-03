@@ -5,10 +5,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
 
 import { AppContext } from '../AppContextProvider';
-import { AppProviderLangEnum } from '../models';
+import { AppCodeEditorEnum } from '../models';
 import { Menu } from '../components';
 
-const languages = [AppProviderLangEnum.JS, AppProviderLangEnum.TS];
+const languages = [AppCodeEditorEnum.JS, AppCodeEditorEnum.TS];
 
 export const NavBar = () => {
 	const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -19,7 +19,7 @@ export const NavBar = () => {
 		infoDialog: { open, toggleDialog },
 	} = useContext(AppContext);
 
-	const handleClick = (option: AppProviderLangEnum) => {
+	const handleClick = (option: AppCodeEditorEnum) => {
 		setLanguage(option);
 		setAnchorEl(null);
 	};

@@ -1,19 +1,19 @@
 import { createContext, useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 
-import { AppProviderProps, AppProviderLangEnum, AppContextType } from './models';
+import { AppProviderProps, AppProviderLangEnum, AppContextType, AppProviderState, AppCodeEditorEnum } from './models';
 import { useDebouncedText } from './hooks';
-import { bundler } from './bundler';
+import { instance } from './bundler';
 
 export const AppContext = createContext<AppContextType>({
 	language: {
-		selectedLanguage: AppProviderLangEnum.JS,
+		selectedLanguage: AppCodeEditorEnum.JS,
 		setLanguage: (value) => {},
 	},
 	code: {
 		raw: '',
 		bundled: '',
-		error: '',
+		error: [],
 		rawCodeChange: (value) => {},
 	},
 	infoDialog: {
@@ -23,25 +23,25 @@ export const AppContext = createContext<AppContextType>({
 });
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-	const [appState, setAppState] = useState({
-		language: AppProviderLangEnum.JS,
+	const [appState, setAppState] = useState<AppProviderState>({
+		language: AppCodeEditorEnum.JS,
 		rawCode: '',
 		bundle: '',
-		error: '',
+		error: [],
 		infoOpen: false,
 	});
 	const { debounceText, debouncedText } = useDebouncedText();
 
 	useEffect(() => {
 		if (debouncedText) {
-			setAppState((prev) => ({ ...prev, rawCode: debouncedText }));
+			setAppState((prev: any) => ({ ...prev, rawCode: debouncedText }));
 			bundleCode();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedText]);
 
 	const bundleCode = async () => {
-		const { errors, outputFiles } = (await bundler(
+		const { errors, outputFiles } = await instance.bundle(
 			`import _React from "react";
 		import _ReactDOM from "react-dom";
 		const show=(value)=>{
@@ -54,14 +54,15 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
 			return root.innerHTML=value
 		};${debouncedText}`.replaceAll('console.log', 'show'),
-			appState.language
-		)) as any;
-		setAppState((prev) => ({ ...prev, error: errors, bundle: outputFiles[0].text }));
+			appState.language === AppCodeEditorEnum.JS ? AppProviderLangEnum.JS : AppProviderLangEnum.TS
+		);
+		setAppState((prev: any) => ({ ...prev, error: errors, bundle: outputFiles[0].text }));
 	};
-	const setLanguage = (lang: AppProviderLangEnum) => setAppState((prev) => ({ ...prev, language: lang }));
-	const toggleDialog = (value: boolean) => setAppState((prev) => ({ ...prev, infoOpen: value }));
+	const setLanguage = (lang: AppCodeEditorEnum) => setAppState((prev: any) => ({ ...prev, language: lang }));
+	const toggleDialog = (value: boolean) => setAppState((prev: any) => ({ ...prev, infoOpen: value }));
 	const handleChangeCode = (value: string | undefined) => {
-		if (value) debounceText(value);
+		if (value) return debounceText(value);
+		return setAppState((prev) => ({ ...prev, rawCode: '' }));
 	};
 
 	const contextValue = {
