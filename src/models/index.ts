@@ -1,3 +1,3 @@
-export * from './Resize';
-export * from './App';
-export * from './Preview';
+export interface ProviderProps {
+	children: React.ReactNode;
+}

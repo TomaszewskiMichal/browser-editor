@@ -1,10 +1,8 @@
 import { useContext } from 'react';
 
-import { AppContext } from '../../AppContextProvider';
+import { MainContext } from '../../layout';
 
 export const ErrorWindow = () => {
-	const {
-		code: { bundled },
-	} = useContext(AppContext);
+	const { bundled } = useContext(MainContext);
 	return <div>{bundled}</div>;
 };

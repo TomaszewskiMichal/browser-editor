@@ -1,5 +1,5 @@
 import { Menu as MuiMenu, MenuItem, Typography } from '@mui/material';
-import { AppProviderLangEnum } from '../../models';
+import { AppCodeEditorEnum } from '../../app';
 
 interface MenuProps {
 	anchor: Element | null;
@@ -25,7 +25,7 @@ export const Menu = ({ anchor, onClose, options, handleOptionClick, active }: Me
 			open={Boolean(anchor)}
 			onClose={onClose}
 		>
-			{options.map((option: AppProviderLangEnum) => (
+			{options.map((option: AppCodeEditorEnum) => (
 				<MenuItem key={option} onClick={() => handleOptionClick(option)}>
 					<Typography className={option === active ? 'text-green-600' : 'text-red-600'} textAlign="center">
 						{option}

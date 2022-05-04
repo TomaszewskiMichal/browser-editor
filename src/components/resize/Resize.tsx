@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ResizableBox, ResizableBoxProps } from 'react-resizable';
 
-import { ResizableProps, ResizeDimensionState, ResizeDirectionEnum } from '../../models';
+import { ResizableProps, ResizeDimensionState, ResizeDirectionEnum } from './Resize.model';
 
 export const Resizable = ({ direction, children }: ResizableProps) => {
 	const [dimensions, setDimension] = useState<ResizeDimensionState>({

@@ -1,13 +1,11 @@
 import { useRef, useContext, useEffect } from 'react';
 
-import { AppContext } from '../../AppContextProvider';
-import { previewHtml } from '../../models';
+import { MainContext } from '../../layout';
+import { previewHtml } from './Preview.model';
 
 export const Preview = () => {
 	const iFrameRef = useRef<HTMLIFrameElement | null>(null);
-	const {
-		code: { bundled },
-	} = useContext(AppContext);
+	const { bundled } = useContext(MainContext);
 
 	useEffect(() => {
 		if (iFrameRef.current) {

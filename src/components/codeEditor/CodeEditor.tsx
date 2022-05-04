@@ -1,14 +1,14 @@
 import { useContext } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 
-import { AppContext } from '../../AppContextProvider';
+import { AppContext } from '../../app';
+import { MainContext } from '../../layout';
 
 export const CodeEditor = () => {
-	const {
-		language: { selectedLanguage },
-		code: { raw, rawCodeChange },
-	} = useContext(AppContext);
+	const { codeEditorLanguage } = useContext(AppContext);
+	const { raw, rawCodeChange } = useContext(MainContext);
 
+	if (!rawCodeChange) return <div />;
 	return (
 		<MonacoEditor
 			theme="vs-dark"
@@ -18,7 +18,7 @@ export const CodeEditor = () => {
 			width="calc(100% - 9px)"
 			onChange={rawCodeChange}
 			value={raw}
-			language={selectedLanguage}
+			language={codeEditorLanguage}
 			options={{
 				wordWrap: 'on',
 				minimap: { enabled: false },
