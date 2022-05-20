@@ -32,7 +32,8 @@ export const MainProvider = ({ children }: ProviderProps) => {
 
 	const bundleCode = async () => {
 		const { errors, outputFiles } = await instance.bundle(
-			`import _React from "react";
+			`
+		import _React from "react";
 		import _ReactDOM from "react-dom";
 		const show=(value)=>{
 		const root=document.querySelector('#root');
@@ -43,7 +44,8 @@ export const MainProvider = ({ children }: ProviderProps) => {
 			};
 
 			return root.innerHTML=value
-		};${debouncedText}`.replaceAll('console.log', 'show'),
+		};
+		${debouncedText}`.replaceAll('console.log', 'show'),
 			bundlerLanguage
 		);
 		setMainState((prev: any) => ({ ...prev, error: errors, bundle: outputFiles[0].text }));

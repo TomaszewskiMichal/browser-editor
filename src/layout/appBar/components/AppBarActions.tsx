@@ -22,9 +22,8 @@ export const AppBarActions = ({ handleOpenDialog }: AppBarActionsProps) => {
 			setAnchorEl(null);
 		}
 	};
-
 	return (
-		<div className="absolute top-0 right-2 cursor-pointer z-10">
+		<div className="absolute top-0 right-2 cursor-pointer z-10 opacity-25 transform transition duration-500 hover:opacity-100">
 			<SettingsIcon onClick={() => setAnchorEl(anchorRef.current)} ref={anchorRef} />
 			<HelpIcon onClick={handleOpenDialog} />
 			<Menu

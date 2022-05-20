@@ -1,4 +1,6 @@
-import { Menu as MuiMenu, MenuItem, Typography } from '@mui/material';
+import { Menu as MuiMenu, MenuItem, styled, Typography, alpha } from '@mui/material';
+
+import { CustomTheme } from '../../layout/theme';
 import { AppCodeEditorEnum } from '../../app';
 
 interface MenuProps {
@@ -8,6 +10,12 @@ interface MenuProps {
 	handleOptionClick: (option: any) => void;
 	active: any;
 }
+
+const StyledMenuItem = styled(MenuItem)(({ theme }: { theme: CustomTheme }) => ({
+	'&:hover, &:focus': {
+		backgroundColor: alpha(theme.palette.primary.main, 0.5),
+	},
+}));
 
 export const Menu = ({ anchor, onClose, options, handleOptionClick, active }: MenuProps) => {
 	return (
@@ -22,15 +30,22 @@ export const Menu = ({ anchor, onClose, options, handleOptionClick, active }: Me
 				vertical: 'top',
 				horizontal: 'left',
 			}}
+			classes={{
+				list: '!py-0',
+			}}
 			open={Boolean(anchor)}
 			onClose={onClose}
 		>
 			{options.map((option: AppCodeEditorEnum) => (
-				<MenuItem key={option} onClick={() => handleOptionClick(option)}>
-					<Typography className={option === active ? 'text-green-600' : 'text-red-600'} textAlign="center">
-						{option}
-					</Typography>
-				</MenuItem>
+				<StyledMenuItem
+					sx={{
+						backgroundColor: option === active ? 'background.active' : 'background.default',
+					}}
+					key={option}
+					onClick={() => handleOptionClick(option)}
+				>
+					<Typography textAlign="center">{option}</Typography>
+				</StyledMenuItem>
 			))}
 		</MuiMenu>
 	);
