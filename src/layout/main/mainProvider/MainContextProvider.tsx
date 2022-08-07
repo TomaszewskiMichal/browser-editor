@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useContext } from 'react';
+import { createContext, useEffect, useState, useContext, useMemo } from 'react';
 
 import { ProviderProps } from '../../../models';
 import { useDebouncedText } from '../../../hooks';
@@ -9,18 +9,18 @@ import { MainContextType, MainContextState } from './Main.model';
 export const MainContext = createContext<MainContextType>({
 	raw: '',
 	bundled: '',
-	error: [],
+	errors: [],
 	rawCodeChange: null,
 });
 
 export const MainProvider = ({ children }: ProviderProps) => {
-	const { bundlerLanguage } = useContext(AppContext);
+	const { bundlerLanguage, isReactEnabled, debounceTime } = useContext(AppContext);
 	const [mainState, setMainState] = useState<MainContextState>({
 		rawCode: '',
 		bundle: '',
-		error: [],
+		errors: [],
 	});
-	const { debounceText, debouncedText } = useDebouncedText();
+	const { debounceText, debouncedText } = useDebouncedText(debounceTime);
 
 	useEffect(() => {
 		if (debouncedText) {
@@ -28,27 +28,37 @@ export const MainProvider = ({ children }: ProviderProps) => {
 			bundleCode();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouncedText]);
+	}, [debouncedText, isReactEnabled]);
+
+	//TODO wcześniej było JSON.stringify(value)
+	const defaultBundle = useMemo(
+		() =>
+			isReactEnabled
+				? `
+	import React from "react";
+	import ReactDOM from "react-dom";
+	const show=(value)=>{
+	const root=document.querySelector('#root');
+		if(typeof value === 'object'){
+			if(value.$$typeof && value.props) return ReactDOM.render( value,root)
+
+			return root.innerHTML=root.innerHTML+' '+value
+		};
+
+		return root.innerHTML=value
+	};
+	${debouncedText}`.replaceAll('console.log', 'show')
+				: `
+					const show=(value)=>{
+						return root.innerHTML=root.innerHTML+' '+value
+					};
+					${debouncedText}`.replaceAll('console.log', 'show'),
+		[debouncedText, isReactEnabled]
+	);
 
 	const bundleCode = async () => {
-		const { errors, outputFiles } = await instance.bundle(
-			`
-		import _React from "react";
-		import _ReactDOM from "react-dom";
-		const show=(value)=>{
-		const root=document.querySelector('#root');
-			if(typeof value === 'object'){
-				if(value.$$typeof && value.props) return _ReactDOM.render( value,root)
-
-				return root.innerHTML=JSON.stringify(value)
-			};
-
-			return root.innerHTML=value
-		};
-		${debouncedText}`.replaceAll('console.log', 'show'),
-			bundlerLanguage
-		);
-		setMainState((prev: any) => ({ ...prev, error: errors, bundle: outputFiles[0].text }));
+		const { errors, outputFiles } = await instance.bundle(defaultBundle, bundlerLanguage);
+		setMainState((prev) => ({ ...prev, errors: errors, bundle: outputFiles[0].text }));
 	};
 
 	const handleChangeCode = (value: string | undefined) => {
@@ -59,7 +69,7 @@ export const MainProvider = ({ children }: ProviderProps) => {
 	const contextValue = {
 		raw: mainState.rawCode,
 		bundled: mainState.bundle,
-		error: mainState.error,
+		errors: mainState.errors,
 		rawCodeChange: handleChangeCode,
 	};
 

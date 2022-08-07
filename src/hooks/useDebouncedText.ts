@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
 
-export const useDebouncedText = () => {
+export const useDebouncedText = (debounceTime: number) => {
 	const [debouncedState, setDebouncedState] = useState('');
 	const [rawInput, setRawInput] = useState('');
 	let timer: NodeJS.Timeout;
@@ -22,7 +22,7 @@ export const useDebouncedText = () => {
 					})
 					.replace(/\n$/, '')
 			);
-		}, 1000);
+		}, debounceTime);
 	};
 
 	useEffect(() => {

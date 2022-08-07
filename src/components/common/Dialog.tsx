@@ -1,4 +1,4 @@
-import { Dialog as MuiDialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { Dialog as MuiDialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { Button } from './Button';
@@ -13,7 +13,11 @@ interface DialogProps {
 
 export const Dialog = ({ open, handleClose, title, content, customActions }: DialogProps) => {
 	return (
-		<MuiDialog open={open} onClose={handleClose} PaperProps={{ sx: { backgroundColor: 'background.default' } }}>
+		<MuiDialog
+			open={open}
+			onClose={handleClose}
+			PaperProps={{ sx: { borderRadius: '50px', backgroundColor: 'background.default' } }}
+		>
 			<DialogTitle
 				className="flex justify-end items-center"
 				sx={{
@@ -34,7 +38,7 @@ export const Dialog = ({ open, handleClose, title, content, customActions }: Dia
 			</DialogContent>
 			<DialogActions className="flex !justify-center">
 				{customActions ?? (
-					<Button variant="outlined" onClick={handleClose}>
+					<Button variant="contained" onClick={handleClose}>
 						{'Close'}
 					</Button>
 				)}

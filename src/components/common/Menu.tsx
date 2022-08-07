@@ -1,52 +1,40 @@
-import { Menu as MuiMenu, MenuItem, styled, Typography, alpha } from '@mui/material';
-
-import { CustomTheme } from '../../layout/theme';
-import { AppCodeEditorEnum } from '../../app';
+import { Popover } from '@mui/material';
+import { useState } from 'react';
 
 interface MenuProps {
-	anchor: Element | null;
-	onClose: () => void;
-	options: any[];
-	handleOptionClick: (option: any) => void;
-	active: any;
+	children: (setAnchor: (element: Element | null) => void) => React.ReactNode;
+	controlComponent: (setAnchor: (element: Element | null) => void) => React.ReactNode;
 }
 
-const StyledMenuItem = styled(MenuItem)(({ theme }: { theme: CustomTheme }) => ({
-	'&:hover, &:focus': {
-		backgroundColor: alpha(theme.palette.primary.main, 0.5),
-	},
-}));
+export const Menu = ({ children, controlComponent }: MenuProps) => {
+	const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+	const onClose = () => setAnchorEl(null);
 
-export const Menu = ({ anchor, onClose, options, handleOptionClick, active }: MenuProps) => {
 	return (
-		<MuiMenu
-			anchorEl={anchor}
-			anchorOrigin={{
-				vertical: 'bottom',
-				horizontal: 'left',
-			}}
-			keepMounted
-			transformOrigin={{
-				vertical: 'top',
-				horizontal: 'left',
-			}}
-			classes={{
-				list: '!py-0',
-			}}
-			open={Boolean(anchor)}
-			onClose={onClose}
-		>
-			{options.map((option: AppCodeEditorEnum) => (
-				<StyledMenuItem
-					sx={{
-						backgroundColor: option === active ? 'background.active' : 'background.default',
-					}}
-					key={option}
-					onClick={() => handleOptionClick(option)}
-				>
-					<Typography textAlign="center">{option}</Typography>
-				</StyledMenuItem>
-			))}
-		</MuiMenu>
+		<>
+			{controlComponent(setAnchorEl)}
+			<Popover
+				anchorEl={anchorEl}
+				anchorOrigin={{
+					vertical: 'top',
+					horizontal: 'right',
+				}}
+				keepMounted
+				transformOrigin={{
+					vertical: 'top',
+					horizontal: 'right',
+				}}
+				open={!!anchorEl}
+				onClose={onClose}
+				PaperProps={{
+					sx: {
+						p: 1,
+						borderRadius: 5,
+					},
+				}}
+			>
+				{children(setAnchorEl)}
+			</Popover>
+		</>
 	);
 };

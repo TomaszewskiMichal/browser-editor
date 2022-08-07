@@ -9,12 +9,12 @@ const modalList = [
 	{
 		icon: <ArrowRightIcon sx={{ fontSize: 35 }} />,
 		id: 1,
-		value: ' Write Javascript or Typescript code',
+		value: ' Write Javascript or simple Typescript code. You can change it in upper right corner.',
 	},
 	{
 		icon: <ArrowRightIcon sx={{ fontSize: 35 }} />,
 		id: 2,
-		value: 'Import npm packages',
+		value: 'Import npm packages, Javascript only.',
 	},
 	{
 		icon: <ArrowRightIcon sx={{ fontSize: 35 }} />,

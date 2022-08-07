@@ -3,6 +3,7 @@ import MonacoEditor from '@monaco-editor/react';
 
 import { AppContext } from '../../app';
 import { MainContext } from '../../layout';
+import { CircularProgress } from '@mui/material';
 
 export const CodeEditor = () => {
 	const { codeEditorLanguage } = useContext(AppContext);
@@ -19,6 +20,7 @@ export const CodeEditor = () => {
 			onChange={rawCodeChange}
 			value={raw}
 			language={codeEditorLanguage}
+			loading={<CircularProgress sx={{ color: 'background.primary' }} />}
 			options={{
 				wordWrap: 'on',
 				minimap: { enabled: false },

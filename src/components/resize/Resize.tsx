@@ -43,7 +43,7 @@ export const Resizable = ({ direction, children }: ResizableProps) => {
 					minConstraints: [Infinity, dimensions.initialHeight * 0.2],
 					width: Infinity,
 					maxConstraints: [Infinity, dimensions.initialHeight * 0.75],
-					height: 300,
+					height: dimensions.initialHeight * 0.7,
 			  };
 
 	return <ResizableBox {...resizableBoxProps}>{children}</ResizableBox>;
